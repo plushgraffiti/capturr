@@ -10,9 +10,22 @@
 		DAF4A9402E602AC20001D672 /* Capturr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Capturr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DAF4AB2C2E605E280001D672 /* Exceptions for "Capturr" folder in "Capturr" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DAF4A93F2E602AC20001D672 /* Capturr */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		DAF4A9422E602AC20001D672 /* Capturr */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DAF4AB2C2E605E280001D672 /* Exceptions for "Capturr" folder in "Capturr" target */,
+			);
 			path = Capturr;
 			sourceTree = "<group>";
 		};
@@ -256,8 +269,10 @@
 				DEVELOPMENT_TEAM = SCJHX8WFTT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Capturr/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CAPTURR;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Allows us to transcribe voice recordings before sending to your Roam graph";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -291,8 +306,10 @@
 				DEVELOPMENT_TEAM = SCJHX8WFTT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Capturr/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CAPTURR;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Allows us to transcribe voice recordings before sending to your Roam graph";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
