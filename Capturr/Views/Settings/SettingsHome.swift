@@ -72,8 +72,8 @@ struct SettingsHome: View {
                         HStack {
                             Label("Default Block", systemImage: "list.bullet.indent").foregroundColor(.primary)
                             Spacer()
-                            Text("\(profileViewModel.customBlock ?? "Not set")").foregroundColor(.secondary)
-                                
+                            Text(profileViewModel.customBlock?.isEmpty == false ? "Set" : "Not set")
+                                .foregroundColor(.secondary)
                         }
                     }
                     
@@ -84,7 +84,8 @@ struct SettingsHome: View {
                         HStack {
                             Label("Default Tag", systemImage: "tag").foregroundColor(.primary)
                             Spacer()
-                            Text("\(profileViewModel.defaultTag ?? "Not set")").foregroundColor(.secondary)
+                            Text(profileViewModel.defaultTag?.isEmpty == false ? "Set" : "Not set")
+                                .foregroundColor(.secondary)
                                 
                         }
                     }
