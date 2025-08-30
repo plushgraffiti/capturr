@@ -21,14 +21,19 @@ struct CaptureWrite: View {
                 .focused($isFocused)
                 .padding()
                 .scrollContentBackground(.hidden)
-                .background(Color(.secondarySystemBackground))
-                .frame(maxHeight: .infinity)
+                .scrollDismissesKeyboard(.interactively)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .contentMargins(.bottom, 96, for: .scrollContent)
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         isFocused = true
                     }
                 }
-
+        }
+        .background(Color(.systemBackground))
+        .navigationTitle("New Note")
+        .navigationBarTitleDisplayMode(.inline)
+        .safeAreaInset(edge: .bottom) {
             Button(action: submit) {
                 Text("Send to Graph")
                     .frame(maxWidth: .infinity)
@@ -36,18 +41,8 @@ struct CaptureWrite: View {
                     .background(Color.accentColor)
                     .foregroundColor(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .padding()
             }
-        }
-        .navigationTitle("New Note")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button("Done") {
-                    isFocused = false
-                }
-            }
+            .padding()
         }
     }
 
