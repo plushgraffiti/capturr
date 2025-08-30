@@ -160,14 +160,10 @@ final class SyncWorker {
             return
         }
 
-        // Fetch PENDING + IN_PROGRESS to allow self-healing of stuck items
+        // Fetch all and filter in-memory — avoids predicate crashes on stale device schemas
         let pending = SyncStatus.pending.rawValue
         let inProgress = SyncStatus.inProgress.rawValue
-        let descriptor = FetchDescriptor<OutboxItem>(
-            predicate: #Predicate<OutboxItem> { item in
-                item.status == pending || item.status == inProgress
-            }
-        )
+        let descriptor = FetchDescriptor<OutboxItem>()
 
         guard let items = try? modelContext.fetch(descriptor) else { return }
         logger.debug("syncPendingItems: fetched=\(items.count)")
