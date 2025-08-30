@@ -108,7 +108,6 @@ struct HistoryHome: View {
                         Spacer(minLength: 8)
                         Image(systemName: statusIcon(for: item))
                             .foregroundStyle(statusColor(for: item))
-//                            .foregroundStyle(.secondary)
                             .imageScale(.medium)
                             .accessibilityLabel(SyncStatus(rawValue: item.status)?.description ?? "Unknown")
                     }
@@ -121,7 +120,9 @@ struct HistoryHome: View {
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
+                    .tint(.red)
                 }
+                
             }
             .navigationTitle("History")
             .tint(.primary)

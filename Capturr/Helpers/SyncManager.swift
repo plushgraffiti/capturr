@@ -8,7 +8,8 @@
 import Foundation
 import SwiftData
 
-class SyncManager {
+@MainActor
+final class SyncManager {
     let modelContext: ModelContext
     let syncWorker: SyncWorker
 
@@ -29,5 +30,9 @@ class SyncManager {
 
     func captureTodo(_ content: String) {
         capture(content, type: .todo)
+    }
+
+    func kickQueue() {
+        syncWorker.syncPendingItems()
     }
 }

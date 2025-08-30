@@ -7,15 +7,87 @@
 
 import Foundation
 import SwiftData
+import Network
+import OSLog
 
-class SyncWorker {
+final class SyncWorker {
+    // MARK: - State
     private let modelContext: ModelContext
     private static var inFlight: Set<UUID> = []
 
+    // MARK: - Logging / Networking
+    private let logger = Logger(subsystem: "com.capturr.app", category: "SyncWorker")
+    private let pathMonitor = NWPathMonitor()
+    private let pathQueue = DispatchQueue(label: "SyncWorker.Network")
+
+    // MARK: - Loop
+    private var retryLoop: Task<Void, Never>?
+    private let tickIntervalSeconds: UInt64 = 10
+    private let maxConcurrentSends: Int = 1
+    private var monitorStarted = false
+    private let minRetryGapSeconds: TimeInterval = 5 // Short-gap retry for .inProgress
+
+    // MARK: - Date Formatting (cached)
+    private static let timeFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.locale = Locale(identifier: "en_US_POSIX")
+        df.dateFormat = "HH:mm"
+        return df
+    }()
+
+    // MARK: - Init / Deinit
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
+        start()
     }
 
+    deinit {
+        logger.info("SyncWorker deinit — stopping monitors")
+        retryLoop?.cancel()
+        pathMonitor.cancel()
+    }
+
+    // MARK: - Startup
+    private func start() {
+        if !monitorStarted {
+            pathMonitor.pathUpdateHandler = { [weak self] path in
+                guard let self else { return }
+                if path.status == .satisfied {
+                    self.logger.info("NWPathMonitor: online — kicking queue")
+                    self.kick()
+                } else {
+                    self.logger.info("NWPathMonitor: offline")
+                }
+            }
+            pathMonitor.start(queue: pathQueue)
+            monitorStarted = true
+        }
+        startRetryLoop()
+    }
+
+    private func startRetryLoop() {
+        retryLoop?.cancel()
+        retryLoop = Task { [weak self] in
+            guard let self else { return }
+            self.logger.info("Retry loop started (every \(self.tickIntervalSeconds)s)")
+            while !Task.isCancelled {
+                await MainActor.run { [weak self] in
+                    self?.syncPendingItems()
+                }
+                try? await Task.sleep(nanoseconds: tickIntervalSeconds * 1_000_000_000)
+            }
+        }
+    }
+
+    private func kick() {
+        Task { [weak self] in
+            await MainActor.run { [weak self] in
+                self?.syncPendingItems()
+            }
+        }
+    }
+
+    // MARK: - Configuration helpers
     private func configuredContext() -> (api: RoamAPI, profile: UserProfile)? {
         let descriptor = FetchDescriptor<UserProfile>()
         guard let profile = try? modelContext.fetch(descriptor).first,
@@ -28,10 +100,10 @@ class SyncWorker {
 
     private func resolveLocation(from profile: UserProfile) -> RoamLocation {
         if profile.useDailyNotes { return .dailyNote }
-        if let page = profile.customLocation?.trimmingCharacters(in: .whitespacesAndNewlines), !page.isEmpty {
+        if let page = profile.customLocation?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !page.isEmpty {
             return .page(page)
         }
-        // Fallback to Daily Notes if custom is missing
         return .dailyNote
     }
 
@@ -39,14 +111,11 @@ class SyncWorker {
         var suffixParts: [String] = []
 
         if profile.addTimestamp {
-            let df = DateFormatter()
-            df.locale = Locale(identifier: "en_US_POSIX")
-            df.dateFormat = "HH:mm" // 24-hour format
             let ts = item.stampAt ?? Date()
-            suffixParts.append(df.string(from: ts))
+            suffixParts.append(Self.timeFormatter.string(from: ts))
         }
-
-        if let tagRaw = profile.defaultTag?.trimmingCharacters(in: .whitespacesAndNewlines), !tagRaw.isEmpty {
+        if let tagRaw = profile.defaultTag?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !tagRaw.isEmpty {
             suffixParts.append(tagRaw)
         }
 
@@ -64,42 +133,67 @@ class SyncWorker {
         return (base + jitter)
     }
 
+    // MARK: - Queue processing
+    @MainActor
     func syncPendingItems() {
+        if pathMonitor.currentPath.status != .satisfied {
+            logger.debug("syncPendingItems: skip (offline)")
+            return
+        }
         guard let ctx = configuredContext() else {
+            logger.debug("syncPendingItems: skip (not configured)")
             return
         }
 
-        let pendingStatus = SyncStatus.pending.rawValue
+        // Fetch PENDING + IN_PROGRESS to allow self-healing of stuck items
+        let pending = SyncStatus.pending.rawValue
+        let inProgress = SyncStatus.inProgress.rawValue
         let descriptor = FetchDescriptor<OutboxItem>(
             predicate: #Predicate<OutboxItem> { item in
-                item.status == pendingStatus
+                item.status == pending || item.status == inProgress
             }
         )
 
-        guard let items = try? modelContext.fetch(descriptor) else {
-            return
-        }
+        guard let items = try? modelContext.fetch(descriptor) else { return }
+        logger.debug("syncPendingItems: fetched=\(items.count)")
 
         let location = resolveLocation(from: ctx.profile)
         let now = Date()
+
         let filtered = items.filter { item in
-            let status = SyncStatus(rawValue: item.status)
-            let hard = item.hardError ?? false
-            if hard { return false }
-            if status == .inProgress || status == .success { return false }
-            if let next = item.nextAttemptAt, next > now { return false }
+            // Never pick up items that are currently being sent
             if Self.inFlight.contains(item.id) { return false }
-            return true
+
+            // Skip hard errors until credentials/settings change
+            if item.hardError ?? false { return false }
+
+            // Pending items: send if due (or no schedule)
+            if item.status == pending {
+                if let next = item.nextAttemptAt { return next <= now }
+                return true
+            }
+
+            // In-progress items: retry after a small gap since last attempt
+            if item.status == inProgress {
+                let last = item.lastAttemptAt ?? .distantPast
+                return last <= now.addingTimeInterval(-minRetryGapSeconds)
+            }
+
+            return false
         }
-        for item in filtered {
+
+        logger.debug("syncPendingItems: candidates=\(filtered.count)")
+
+        for item in filtered.prefix(maxConcurrentSends) {
+            // Safety valve: clear stale in-flight marker before retry
+            Self.inFlight.remove(item.id)
             sync(item, using: ctx.api, profile: ctx.profile, location: location)
         }
     }
 
+    @MainActor
     func sync(_ item: OutboxItem) {
-        guard let ctx = configuredContext() else {
-            return
-        }
+        guard let ctx = configuredContext() else { return }
         let status = SyncStatus(rawValue: item.status)
         if status == .success || status == .inProgress { return }
         if Self.inFlight.contains(item.id) { return }
@@ -155,6 +249,7 @@ class SyncWorker {
                 }
                 Self.inFlight.remove(item.id)
                 try? self?.modelContext.save()
+                self?.kick()
             }
         }
 
