@@ -14,6 +14,7 @@ final class SyncWorker {
     // MARK: - State
     private let modelContext: ModelContext
     private static var inFlight: Set<UUID> = []
+    private static var isTicking: Bool = false
 
     // MARK: - Logging / Networking
     private let logger = Logger(subsystem: "com.capturr.app", category: "SyncWorker")
@@ -136,12 +137,26 @@ final class SyncWorker {
     // MARK: - Queue processing
     @MainActor
     func syncPendingItems() {
+        if Self.isTicking {
+            logger.debug("syncPendingItems: coalesce (already running)")
+            return
+        }
+        Self.isTicking = true
+        defer { Self.isTicking = false }
+
         if pathMonitor.currentPath.status != .satisfied {
             logger.debug("syncPendingItems: skip (offline)")
             return
         }
         guard let ctx = configuredContext() else {
-            logger.debug("syncPendingItems: skip (not configured)")
+            // Log which fields are missing to aid debugging
+            let profile = try? modelContext.fetch(FetchDescriptor<UserProfile>()).first
+            let missingGraph = (profile?.graphName ?? "").isEmpty
+            let missingToken = (profile?.apiToken ?? "").isEmpty
+            let missing = [missingGraph ? "graphName" : nil, missingToken ? "apiToken" : nil]
+                .compactMap { $0 }
+                .joined(separator: ",")
+            logger.debug("syncPendingItems: skip (not configured) missing=\(missing)")
             return
         }
 
@@ -239,9 +254,17 @@ final class SyncWorker {
                     var statusCode: Int? = nil
                     if let apiErr = error as? RoamAPIError { statusCode = apiErr.statusCode }
                     if let code = statusCode, code == 401 || code == 403 {
-                        // Treat as hard error until credentials change
-                        item.hardError = true
-                        item.nextAttemptAt = nil
+                        // Soft-auth policy: allow a few spaced retries in case of transient server-side auth glitches
+                        // `attemptCount` has already been incremented above
+                        if item.attemptCount < 3 {
+                            item.hardError = false
+                            let delay = self?.backoffDelay(for: item.attemptCount, statusCode: statusCode) ?? 60
+                            item.nextAttemptAt = Date().addingTimeInterval(delay)
+                        } else {
+                            // After several consecutive auth errors, treat as hard until credentials change
+                            item.hardError = true
+                            item.nextAttemptAt = nil
+                        }
                     } else {
                         let delay = self?.backoffDelay(for: item.attemptCount, statusCode: statusCode) ?? 0
                         item.nextAttemptAt = Date().addingTimeInterval(delay)
