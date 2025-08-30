@@ -34,10 +34,12 @@ struct CaptureHome: View {
                     )
                         
                 }
+                .padding(.bottom, 10)
                 
                 
-            }.padding(10)
-                .navigationTitle("Capture")
+            }
+            .padding(10)
+            .navigationTitle("Capture")
         }
     }
 }
