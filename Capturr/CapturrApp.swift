@@ -10,9 +10,12 @@ import SwiftData
 
 @main
 struct CaptureApp: App {
+    private let container: ModelContainer = {
+        do { return try ModelContainer(for: OutboxItem.self, UserProfile.self) }
+        catch { fatalError("Failed to create ModelContainer: \(error)") }
+    }()
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var profileViewModel = ProfileViewModel()
-    @Environment(\.modelContext) private var modelContext
 
     // Strong reference so the worker lives for the session
     @State private var syncManager: SyncManager?
@@ -23,7 +26,7 @@ struct CaptureApp: App {
                 .environmentObject(profileViewModel)
                 .task {
                     if syncManager == nil {
-                        syncManager = SyncManager(modelContext: modelContext)
+                        syncManager = SyncManager(modelContext: container.mainContext)
                     }
                 }
                 .onChange(of: scenePhase) { _, newPhase in
@@ -32,6 +35,6 @@ struct CaptureApp: App {
                     }
                 }
         }
-        .modelContainer(for: [OutboxItem.self, UserProfile.self])
+        .modelContainer(container)
     }
 }
