@@ -28,14 +28,14 @@ class RoamAPI {
         self.apiToken = apiToken
     }
 
-    func sendNoteBlock(_ content: String, _ location: RoamLocation, completion: @escaping (Result<Void, Error>) -> Void) {
+    func sendNoteBlock(_ content: String, _ location: RoamLocation, nestUnder: String? = nil, completion: @escaping (Result<Void, Error>) -> Void) {
         
         guard let url = URL(string: "https://append-api.roamresearch.com/api/graph/\(graphName)/append-blocks") else {
             completion(.failure(NSError(domain: "InvalidURL", code: -1)))
             return
         }
 
-        let locationPayload: [String: Any]
+        var locationPayload: [String: Any]
         switch location {
         case .dailyNote:
             let dateFormatter = DateFormatter()
@@ -53,6 +53,12 @@ class RoamAPI {
                 "page": [
                     "title": title
                 ]
+            ]
+        }
+        // developer-documentation/page/NO5bYpywn
+        if let nest = nestUnder?.trimmingCharacters(in: .whitespacesAndNewlines), !nest.isEmpty {
+            locationPayload["nest-under"] = [
+                "string": nest
             ]
         }
 
@@ -105,8 +111,8 @@ class RoamAPI {
         task.resume()
     }
 
-    func sendTodoBlock(_ content: String, _ location: RoamLocation, completion: @escaping (Result<Void, Error>) -> Void) {
+    func sendTodoBlock(_ content: String, _ location: RoamLocation, nestUnder: String? = nil, completion: @escaping (Result<Void, Error>) -> Void) {
         let formatted = "{{[[TODO]]}} \(content)"
-        sendNoteBlock(formatted, location, completion: completion)
+        sendNoteBlock(formatted, location, nestUnder: nestUnder, completion: completion)
     }
 }

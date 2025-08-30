@@ -47,7 +47,7 @@ struct SettingBlock: View {
                             Text("Default Block")
                                 .foregroundStyle(.primary)
                             Spacer()
-                            TextField("My [[Roam Captures]]", text: Binding(
+                            TextField("From [[CAPTURR]]", text: Binding(
                                 get: { viewModel.customBlock ?? "" },
                                 set: { viewModel.customBlock = $0 }
                             ))

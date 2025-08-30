@@ -119,14 +119,18 @@ class SyncWorker {
         }
         try? modelContext.save()
 
-        let send = (item.type == .todo) ? api.sendTodoBlock : api.sendNoteBlock
+        let rawNest = profile.customBlock?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let nestUnderArg: String? = {
+            guard let s = rawNest, !s.isEmpty else { return nil }
+            return s
+        }()
 
         let prepared = decoratedContent(for: item, using: profile)
 
         item.attemptCount += 1
         try? modelContext.save()
 
-        send(prepared, location) { [weak self] result in
+        let handle: (Result<Void, Error>) -> Void = { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
@@ -152,6 +156,12 @@ class SyncWorker {
                 Self.inFlight.remove(item.id)
                 try? self?.modelContext.save()
             }
+        }
+
+        if item.type == .todo {
+            api.sendTodoBlock(prepared, location, nestUnder: nestUnderArg, completion: handle)
+        } else {
+            api.sendNoteBlock(prepared, location, nestUnder: nestUnderArg, completion: handle)
         }
     }
 }
