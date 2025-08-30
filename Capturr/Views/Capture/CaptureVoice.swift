@@ -59,11 +59,16 @@ struct CaptureVoice: View {
                 do {
                     let text = try await input.end()
                     message = "Saving…"
-                    let manager = SyncManager(modelContext: modelContext)
-                    manager.captureNote(text)
-                    let worker = SyncWorker(modelContext: modelContext)
-                    worker.syncPendingItems()
-                    message = "Saved"
+                    // Enqueue only; no local SyncManager/SyncWorker or manual kicks
+                    let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !trimmed.isEmpty {
+                        let item = OutboxItem(content: trimmed, type: .note)
+                        modelContext.insert(item)
+                        try? modelContext.save()
+                        message = "Saved"
+                    } else {
+                        message = "Nothing to save"
+                    }
                     dismiss()
                 } catch {
                     message = error.localizedDescription

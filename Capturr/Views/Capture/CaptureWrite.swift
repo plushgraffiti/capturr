@@ -47,10 +47,11 @@ struct CaptureWrite: View {
     }
 
     private func submit() {
-        let manager = SyncManager(modelContext: modelContext)
-        manager.captureNote(text)
-        let worker = SyncWorker(modelContext: modelContext)
-        worker.syncPendingItems()
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        let item = OutboxItem(content: trimmed, type: .note)
+        modelContext.insert(item)
+        try? modelContext.save()
         dismiss()
     }
 }

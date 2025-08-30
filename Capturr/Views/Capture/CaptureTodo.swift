@@ -66,17 +66,16 @@ struct CaptureTodo: View {
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
 
-        let manager = SyncManager(modelContext: modelContext)
+        guard !nonEmptyTodos.isEmpty else { return }
+
         for todo in nonEmptyTodos {
-            manager.captureTodo(todo)
+            let item = OutboxItem(content: todo, type: .todo)
+            modelContext.insert(item)
         }
-
-        // Kick the background sync queue immediately after enqueuing items
-        let worker = SyncWorker(modelContext: modelContext)
-        worker.syncPendingItems()
-
+        try? modelContext.save()
         dismiss()
     }
+    
 }
 
 #Preview {

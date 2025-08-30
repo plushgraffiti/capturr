@@ -41,13 +41,6 @@ struct ContentView: View {
         }
         .preferredColorScheme(resolvedScheme)
     }
-    
-    private func triggerInitialSyncIfConfigured() {
-        guard let g = profileViewModel.graphName, !g.isEmpty,
-              let t = profileViewModel.apiToken, !t.isEmpty else { return }
-        let worker = SyncWorker(modelContext: modelContext)
-        worker.syncPendingItems()
-    }
 
     private func initializeProfile(using modelContext: ModelContext) {
         guard profileViewModel.profileManager == nil else { return }
@@ -65,12 +58,10 @@ struct ContentView: View {
 
             if let profile = profiles.first {
                 profileViewModel.updateViewModel(with: profile)
-                triggerInitialSyncIfConfigured()
             } else {
                 let newProfile = UserProfile(id: deviceID)
                 modelContext.insert(newProfile)
                 profileViewModel.updateViewModel(with: newProfile)
-                triggerInitialSyncIfConfigured()
                 try modelContext.save()
                 print("🆕 Created new profile")
             }
