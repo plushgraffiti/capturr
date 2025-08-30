@@ -271,6 +271,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Capturr/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CAPTURR;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Allows us to transcribe voice recordings before sending to your Roam graph";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -308,6 +309,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Capturr/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CAPTURR;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Allows us to transcribe voice recordings before sending to your Roam graph";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
