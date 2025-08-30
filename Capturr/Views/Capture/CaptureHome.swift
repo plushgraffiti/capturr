@@ -13,7 +13,8 @@ struct CaptureHome: View {
             VStack(alignment: .leading) {
                 Spacer()
                 
-                HStack {
+                LazyVGrid(columns: [GridItem(.flexible(), spacing: 4), GridItem(.flexible(), spacing: 4)], alignment: .leading, spacing: 0) {
+                    
                     CaptureButton(
                         destination: CaptureWrite(),
                         label: "Write",
@@ -25,18 +26,17 @@ struct CaptureHome: View {
                         label: "Todo",
                         icon: "checklist"
                     )
-                }
-                
-                HStack {
+                        
                     CaptureButton(
                         destination: CaptureVoice(),
                         label: "Voice",
                         icon: "waveform"
                     )
-                    
+                        
                 }
                 
-            }.padding(20)
+                
+            }.padding(10)
                 .navigationTitle("Capture")
         }
     }
