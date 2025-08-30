@@ -12,6 +12,7 @@ struct SettingsHome: View {
     @Environment(\.modelContext) private var context
     @Environment(\.locale) private var locale
     @EnvironmentObject private var profileViewModel: ProfileViewModel
+    @Environment(\.openURL) private var openURL
     
     let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"
     let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"
@@ -112,6 +113,30 @@ struct SettingsHome: View {
                             Text("\(profileViewModel.appAppearance.title)").foregroundColor(.secondary)
                         }
                     }
+                    
+                    Button {
+                        let buttonURL = "https://github.com/plushgraffiti/capturr/issues"
+                        openURL(URL(string: buttonURL)!)
+                    } label: {
+                        HStack {
+                            Label("Create GitHub Issue", systemImage: "ladybug").foregroundColor(.primary)
+                            Spacer()
+                            
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    
+                    Button {
+                        let buttonURL = "https://buymeacoffee.com/paulgriffiths"
+                        openURL(URL(string: buttonURL)!)
+                    } label: {
+                        HStack {
+                            Label("Buy Me a Coffee", systemImage: "cup.and.heat.waves").foregroundColor(.primary)
+                            Spacer()
+                            
+                        }
+                    }
+                    .buttonStyle(.plain)
                     
                     HStack{
                         Label("Version", systemImage: "info.circle").foregroundColor(.primary)
