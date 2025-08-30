@@ -66,7 +66,6 @@ class SyncWorker {
 
     func syncPendingItems() {
         guard let ctx = configuredContext() else {
-            print("[SyncWorker] Skipping sync: graphName/apiToken not configured")
             return
         }
 
@@ -78,7 +77,6 @@ class SyncWorker {
         )
 
         guard let items = try? modelContext.fetch(descriptor) else {
-            print("Failed to fetch pending items")
             return
         }
 
@@ -100,7 +98,6 @@ class SyncWorker {
 
     func sync(_ item: OutboxItem) {
         guard let ctx = configuredContext() else {
-            print("[SyncWorker] Skipping single-item sync: graphName/apiToken not configured")
             return
         }
         let status = SyncStatus(rawValue: item.status)
@@ -111,8 +108,6 @@ class SyncWorker {
     }
 
     private func sync(_ item: OutboxItem, using api: RoamAPI, profile: UserProfile, location: RoamLocation) {
-        print("[SyncWorker] Starting sync for item:", item.id)
-
         // Prevent double-send and mark in-progress
         if Self.inFlight.contains(item.id) { return }
         Self.inFlight.insert(item.id)

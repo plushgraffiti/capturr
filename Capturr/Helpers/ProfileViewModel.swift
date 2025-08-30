@@ -44,7 +44,6 @@ class ProfileViewModel: ObservableObject {
     // Updates the profile model with current view model data
     func saveChanges(context: ModelContext) throws {
         guard let profile = profileModel else {
-            print("Cannot save: No profile model available")
             return
         }
         
@@ -58,6 +57,5 @@ class ProfileViewModel: ObservableObject {
         profile.customLocation = customLocation
         profile.customBlock = customBlock
         try context.save()
-        print("Profile saved with appAppearance: \(appAppearance)")
     }
 }

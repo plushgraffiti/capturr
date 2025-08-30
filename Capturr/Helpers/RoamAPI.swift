@@ -17,7 +17,7 @@ public enum RoamLocation {
     case dailyNote
     case page(String)
 }
-// roam-graph-token-oa3l7H29ORwW-Y7u2rOTFiIgg1cnp
+
 class RoamAPI {
     private let graphName: String
     private let apiToken: String
@@ -29,7 +29,6 @@ class RoamAPI {
     }
 
     func sendNoteBlock(_ content: String, _ location: RoamLocation, completion: @escaping (Result<Void, Error>) -> Void) {
-        print("[RoamAPI] Preparing to send NOTE:", content)
         
         guard let url = URL(string: "https://append-api.roamresearch.com/api/graph/\(graphName)/append-blocks") else {
             completion(.failure(NSError(domain: "InvalidURL", code: -1)))
@@ -81,18 +80,11 @@ class RoamAPI {
                 return
             }
             
-            print("[RoamAPI] URL:", request.url?.absoluteString ?? "nil")
-            print("[RoamAPI] Response status:", httpResponse.statusCode)
-            if let data = data, let body = String(data: data, encoding: .utf8) {
-                print("[RoamAPI] Response body:", body)
-            }
-
             if httpResponse.statusCode == 200 {
                 completion(.success(()))
             } else {
                 var serverMessage: String? = nil
                 if let data = data {
-                    // Try to parse {"message": "..."}
                     if let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
                        let msg = obj["message"] as? String, !msg.isEmpty {
                         serverMessage = msg
