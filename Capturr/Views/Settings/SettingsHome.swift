@@ -127,18 +127,6 @@ struct SettingsHome: View {
                     }
                     .buttonStyle(.plain)
                     
-                    Button {
-                        let buttonURL = "https://buymeacoffee.com/paulgriffiths"
-                        openURL(URL(string: buttonURL)!)
-                    } label: {
-                        HStack {
-                            Label("Buy Me a Coffee", systemImage: "cup.and.heat.waves").foregroundColor(.primary)
-                            Spacer()
-                            
-                        }
-                    }
-                    .buttonStyle(.plain)
-                    
                     HStack{
                         Label("Version", systemImage: "info.circle").foregroundColor(.primary)
                         Spacer()
