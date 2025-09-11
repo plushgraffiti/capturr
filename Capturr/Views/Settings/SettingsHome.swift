@@ -14,6 +14,9 @@ struct SettingsHome: View {
     @EnvironmentObject private var profileViewModel: ProfileViewModel
     @Environment(\.openURL) private var openURL
     
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding: Bool = false
+    @State private var showResetOnboardingAlert: Bool = false
+    
     let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"
     let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"
     
@@ -116,11 +119,23 @@ struct SettingsHome: View {
                     }
                     
                     Button {
+                        // Reset onboarding flag and inform the user
+                        hasSeenOnboarding = false
+                        showResetOnboardingAlert = true
+                    } label: {
+                        HStack {
+                            Label("Reset Onboarding", systemImage: "arrowshape.turn.up.backward.badge.clock").foregroundColor(.primary)
+                            Spacer()
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    
+                    Button {
                         let buttonURL = "https://github.com/plushgraffiti/capturr/issues"
                         openURL(URL(string: buttonURL)!)
                     } label: {
                         HStack {
-                            Label("Create GitHub Issue", systemImage: "ladybug").foregroundColor(.primary)
+                            Label("Report Issue", systemImage: "ladybug").foregroundColor(.primary)
                             Spacer()
                             
                         }
@@ -141,6 +156,9 @@ struct SettingsHome: View {
             }
             .navigationTitle("Settings")
             .listStyle(.insetGrouped)
+            .alert("Onboarding reset. Close the app, reopen and you will see onboarding again.", isPresented: $showResetOnboardingAlert) {
+                Button("OK", role: .cancel) { }
+            }
         }
     }
 }
