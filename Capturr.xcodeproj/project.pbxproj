@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DAF2526E2E7C65790047BCD0 /* Sharing.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DAF252642E7C65790047BCD0 /* Sharing.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DAF2528B2E7EE32C0047BCD0 /* CapturrIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = DAF2528A2E7EE32C0047BCD0 /* CapturrIcon.icon */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		DAF252642E7C65790047BCD0 /* Sharing.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Sharing.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DAF2528A2E7EE32C0047BCD0 /* CapturrIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = CapturrIcon.icon; sourceTree = "<group>"; };
 		DAF4A9402E602AC20001D672 /* Capturr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Capturr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -106,6 +108,7 @@
 		DAF4A9372E602AC20001D672 = {
 			isa = PBXGroup;
 			children = (
+				DAF2528A2E7EE32C0047BCD0 /* CapturrIcon.icon */,
 				DAF4A9422E602AC20001D672 /* Capturr */,
 				DAF252652E7C65790047BCD0 /* Sharing */,
 				DAF4A9412E602AC20001D672 /* Products */,
@@ -220,6 +223,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAF2528B2E7EE32C0047BCD0 /* CapturrIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,7 +451,7 @@
 		DAF4A94C2E602AC30001D672 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = CapturrIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Capturr/Capturr.entitlements;
@@ -489,7 +493,7 @@
 		DAF4A94D2E602AC30001D672 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = CapturrIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Capturr/Capturr.entitlements;
