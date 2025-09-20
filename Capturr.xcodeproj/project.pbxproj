@@ -6,11 +6,56 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		DAF2526E2E7C65790047BCD0 /* Sharing.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DAF252642E7C65790047BCD0 /* Sharing.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DAF2526C2E7C65790047BCD0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DAF4A9382E602AC20001D672 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DAF252632E7C65790047BCD0;
+			remoteInfo = Sharing;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DAF2526F2E7C65790047BCD0 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DAF2526E2E7C65790047BCD0 /* Sharing.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		DAF252642E7C65790047BCD0 /* Sharing.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Sharing.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAF4A9402E602AC20001D672 /* Capturr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Capturr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DAF252732E7C65790047BCD0 /* Exceptions for "Sharing" folder in "Sharing" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DAF252632E7C65790047BCD0 /* Sharing */;
+		};
+		DAF252792E7DCA570047BCD0 /* Exceptions for "Capturr" folder in "Sharing" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Helpers/SharedModelContainer.swift,
+				Models/OutboxItem.swift,
+				Models/UserProfile.swift,
+			);
+			target = DAF252632E7C65790047BCD0 /* Sharing */;
+		};
 		DAF4AB2C2E605E280001D672 /* Exceptions for "Capturr" folder in "Capturr" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -21,10 +66,19 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		DAF252652E7C65790047BCD0 /* Sharing */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DAF252732E7C65790047BCD0 /* Exceptions for "Sharing" folder in "Sharing" target */,
+			);
+			path = Sharing;
+			sourceTree = "<group>";
+		};
 		DAF4A9422E602AC20001D672 /* Capturr */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				DAF4AB2C2E605E280001D672 /* Exceptions for "Capturr" folder in "Capturr" target */,
+				DAF252792E7DCA570047BCD0 /* Exceptions for "Capturr" folder in "Sharing" target */,
 			);
 			path = Capturr;
 			sourceTree = "<group>";
@@ -32,6 +86,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		DAF252612E7C65790047BCD0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DAF4A93D2E602AC20001D672 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -46,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				DAF4A9422E602AC20001D672 /* Capturr */,
+				DAF252652E7C65790047BCD0 /* Sharing */,
 				DAF4A9412E602AC20001D672 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				DAF4A9402E602AC20001D672 /* Capturr.app */,
+				DAF252642E7C65790047BCD0 /* Sharing.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,6 +124,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		DAF252632E7C65790047BCD0 /* Sharing */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DAF252722E7C65790047BCD0 /* Build configuration list for PBXNativeTarget "Sharing" */;
+			buildPhases = (
+				DAF252602E7C65790047BCD0 /* Sources */,
+				DAF252612E7C65790047BCD0 /* Frameworks */,
+				DAF252622E7C65790047BCD0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				DAF252652E7C65790047BCD0 /* Sharing */,
+			);
+			name = Sharing;
+			packageProductDependencies = (
+			);
+			productName = Sharing;
+			productReference = DAF252642E7C65790047BCD0 /* Sharing.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		DAF4A93F2E602AC20001D672 /* Capturr */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DAF4A94B2E602AC30001D672 /* Build configuration list for PBXNativeTarget "Capturr" */;
@@ -68,10 +153,12 @@
 				DAF4A93C2E602AC20001D672 /* Sources */,
 				DAF4A93D2E602AC20001D672 /* Frameworks */,
 				DAF4A93E2E602AC20001D672 /* Resources */,
+				DAF2526F2E7C65790047BCD0 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				DAF2526D2E7C65790047BCD0 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				DAF4A9422E602AC20001D672 /* Capturr */,
@@ -90,9 +177,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1640;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					DAF252632E7C65790047BCD0 = {
+						CreatedOnToolsVersion = 26.0;
+					};
 					DAF4A93F2E602AC20001D672 = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -113,11 +203,19 @@
 			projectRoot = "";
 			targets = (
 				DAF4A93F2E602AC20001D672 /* Capturr */,
+				DAF252632E7C65790047BCD0 /* Sharing */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		DAF252622E7C65790047BCD0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DAF4A93E2E602AC20001D672 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,6 +226,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		DAF252602E7C65790047BCD0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DAF4A93C2E602AC20001D672 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,7 +242,83 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		DAF2526D2E7C65790047BCD0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DAF252632E7C65790047BCD0 /* Sharing */;
+			targetProxy = DAF2526C2E7C65790047BCD0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		DAF252702E7C65790047BCD0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Sharing/Sharing.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(CURRENT_PROJECT_VERSION)";
+				DEVELOPMENT_TEAM = SCJHX8WFTT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Sharing/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Sharing;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = "$(MARKETING_VERSION)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pg.Capturr.Sharing;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		DAF252712E7C65790047BCD0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Sharing/Sharing.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(CURRENT_PROJECT_VERSION)";
+				DEVELOPMENT_TEAM = SCJHX8WFTT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Sharing/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Sharing;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = "$(MARKETING_VERSION)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pg.Capturr.Sharing;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		DAF4A9492E602AC30001D672 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -172,6 +353,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = SCJHX8WFTT;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -193,6 +375,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.1.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -236,6 +419,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SCJHX8WFTT;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -251,6 +435,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.1.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -265,6 +450,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Capturr/Capturr.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = SCJHX8WFTT;
@@ -306,6 +492,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Capturr/Capturr.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = SCJHX8WFTT;
@@ -344,6 +531,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		DAF252722E7C65790047BCD0 /* Build configuration list for PBXNativeTarget "Sharing" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DAF252702E7C65790047BCD0 /* Debug */,
+				DAF252712E7C65790047BCD0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		DAF4A93B2E602AC20001D672 /* Build configuration list for PBXProject "Capturr" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
