@@ -16,7 +16,7 @@ struct CaptureVoice: View {
     @State private var message: String? = "Ready"
 
     // Injected for testability; default uses our concrete VoiceInput
-    let input: CaptureInput = VoiceInput()
+    let input: CaptureSession = VoiceInput()
 
     var body: some View {
         VStack(spacing: 24) {
