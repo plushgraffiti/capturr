@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class VoiceInput: CaptureInput {
+public final class VoiceInput: CaptureSession {
     private let settings: VoiceCaptureSettings
     private let audio: AudioSessionManaging
     private let speech: SpeechRecognizing
