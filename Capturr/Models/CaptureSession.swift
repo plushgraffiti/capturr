@@ -1,5 +1,5 @@
 //
-//  CaptureInput.swift
+//  CaptureSession.swift
 //  Capturr
 //
 //  Created by Paul Griffiths on 13/8/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol CaptureInput {
+protocol CaptureSession {
     /// Prepare resources and begin capturing.
     func begin() throws
     /// Finish capture and return a final transcript (single paragraph).

@@ -20,7 +20,6 @@ struct SettingsHome: View {
     let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"
     let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"
     
-    
     var body: some View {
         NavigationStack {
             List {
@@ -80,7 +79,6 @@ struct SettingsHome: View {
                         }
                     }
                     
-                    
                     NavigationLink {
                         SettingTag(viewModel: profileViewModel)
                     } label: {
@@ -89,11 +87,8 @@ struct SettingsHome: View {
                             Spacer()
                             Text(profileViewModel.defaultTag?.isEmpty == false ? "Set" : "Not set")
                                 .foregroundColor(.secondary)
-                                
                         }
                     }
-                    
-                    
                     
                     Toggle(isOn: $profileViewModel.addTimestamp) {
                         Label("Append Time", systemImage: "clock")
@@ -104,9 +99,23 @@ struct SettingsHome: View {
                     }
                     
                 } header: {
-                    Text("Preferences")
+                    Text("Capture Preferences")
                 }
              
+                Section {
+                    
+                    Toggle(isOn: $profileViewModel.shareFormatLinks) {
+                        Label("Format URLs for Roam", systemImage: "link")
+                            .foregroundColor(.primary)
+                    }
+                    .onChange(of: profileViewModel.shareFormatLinks) {
+                        try? profileViewModel.saveChanges(context: context)
+                    }
+                    
+                } header: {
+                    Text("Share Preferences")
+                }
+                
                 Section {
                     NavigationLink {
                         SettingAppearance()
@@ -149,9 +158,7 @@ struct SettingsHome: View {
                             .foregroundStyle(.secondary)
                     }
                     
-                } header: {
-                    Text("App")
-                }
+                } 
                 
             }
             .navigationTitle("Settings")
