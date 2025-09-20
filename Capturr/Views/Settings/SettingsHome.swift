@@ -158,9 +158,7 @@ struct SettingsHome: View {
                             .foregroundStyle(.secondary)
                     }
                     
-                } header: {
-                    Text("CAPTURR")
-                }
+                } 
                 
             }
             .navigationTitle("Settings")
