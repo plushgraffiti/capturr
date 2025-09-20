@@ -20,6 +20,7 @@ class ProfileViewModel: ObservableObject {
     @Published var useDailyNotes: Bool = true
     @Published var customLocation: String?
     @Published var customBlock: String?
+    @Published var shareFormatLinks: Bool = false
     
     var modelContext: ModelContext!
     var profileManager: ProfileManager?
@@ -38,6 +39,7 @@ class ProfileViewModel: ObservableObject {
         self.useDailyNotes = profile.useDailyNotes
         self.customLocation = profile.customLocation
         self.customBlock = profile.customBlock
+        self.shareFormatLinks = profile.shareFormatLinks
         self.isProfileReady = true
     }
     
@@ -56,6 +58,7 @@ class ProfileViewModel: ObservableObject {
         profile.useDailyNotes = useDailyNotes
         profile.customLocation = customLocation
         profile.customBlock = customBlock
+        profile.shareFormatLinks = shareFormatLinks
         try context.save()
     }
 }

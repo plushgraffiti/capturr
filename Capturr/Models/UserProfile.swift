@@ -24,6 +24,7 @@ class UserProfile {
     var useDailyNotes: Bool = true
     var customLocation: String?
     var customBlock: String?
+    var shareFormatLinks: Bool = false
     
     init(
         id: String = UUID().uuidString,
